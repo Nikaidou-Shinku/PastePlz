@@ -1,7 +1,8 @@
 {
   "name": "pasteplz",
   "private": true,
-  "version": "0.0.0",
+  "description": "A simple online pastebin.",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
