@@ -1,30 +1,37 @@
-import { useMemo, useRef } from "react";
+import { useRef, useState } from "react";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Button, message } from "antd";
 import { Loading } from "../../components/Loading";
+import { SettingLine } from "./components/SettingLine";
+import { IndentType } from "./components/SettingLine/IndentSelect";
 import { HomeContainer, EditorContainer, TitleContainer } from "./styles";
 
 export const Home = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
-  const now = useMemo(() => new Date().toLocaleDateString(), []);
+  const [lang, setLanguage] = useState("cpp");
+  const [replaceTabWithSpaces, setUseSpaces] = useState(true);
+  const [indentLength, setIndentLength] = useState(4);
+  const [ok, setOk] = useState(false);
 
   const handleMount: OnMount = (editor, _monaco) => {
     editorRef.current = editor;
-    editor.setPosition({
-      lineNumber: 5,
-      column: 1
-    });
     editor.focus();
+    setOk(true);
   };
 
   const onPaste = () => {
     const edt = editorRef.current;
     if (typeof edt === "undefined") {
-      message.error("Can not get editor!");
+      message.error("Unable to get editor!");
     } else {
-      console.log(edt.getValue());
+      console.log(edt.getValue()); // TODO: submit content to backend
     }
+  };
+
+  const setIndent = (value: IndentType) => {
+    setUseSpaces(value[0] === "spaces");
+    setIndentLength(parseInt(value[1]));
   };
 
   return (
@@ -32,12 +39,15 @@ export const Home = () => {
       <TitleContainer>
         Hello, PastePlz!
       </TitleContainer>
+      <SettingLine
+        setLanguage={setLanguage}
+        setIndent={setIndent}
+      />
       <EditorContainer>
         <Editor
           width="100%"
           height="100%"
-          defaultLanguage="cpp"
-          defaultValue={`/**\n *  Author: unknown\n *  Date: ${now}\n */\n`}
+          language={lang}
           onMount={handleMount}
           loading={(
             <Loading
@@ -45,15 +55,24 @@ export const Home = () => {
               freshInterval={500}
             />
           )}
+          options={{
+            tabSize: indentLength,
+            insertSpaces: replaceTabWithSpaces,
+            detectIndentation: false
+          }}
         />
       </EditorContainer>
-      <Button
-        type="primary"
-        size="large"
-        onClick={onPaste}
-      >
-        OK~
-      </Button>
+      {
+        ok && (
+          <Button
+            type="primary"
+            size="large"
+            onClick={onPaste}
+          >
+            OK~
+          </Button>
+        )
+      }
     </HomeContainer>
   );
 };
