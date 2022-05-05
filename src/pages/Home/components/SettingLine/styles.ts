@@ -5,9 +5,10 @@ export const SettingLineContainer = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
-  width: min(80%, 1280px);
+  width: 100%;
+  height: 40px;
 
-  margin: 20px 0;
+  margin: 5px 0;
 `;
 
 export const SelectContainer = styled.div`

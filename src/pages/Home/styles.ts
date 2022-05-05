@@ -1,21 +1,17 @@
 import styled from "@emotion/styled";
-import { Typography } from "antd";
 
 export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+  justify-content: space-evenly;
 
-export const TitleContainer = styled(Typography.Title)`
-  margin: 100px 0;
+  height: 100%;
 `;
 
 export const EditorContainer = styled.div`
-  margin: 20px 0;
-
   width: min(80%, 1280px);
-  height: 720px;
+  height: 60%;
 
   background-color: white;
   border: groove;

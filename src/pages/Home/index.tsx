@@ -2,10 +2,10 @@ import { useRef, useState } from "react";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Button, message } from "antd";
-import { Loading } from "../../components/Loading";
-import { SettingLine } from "./components/SettingLine";
+import { Loading } from "../../components";
+import { SettingLine, Title } from "./components";
 import { IndentType } from "./components/SettingLine/IndentSelect";
-import { HomeContainer, EditorContainer, TitleContainer } from "./styles";
+import { HomeContainer, EditorContainer } from "./styles";
 
 export const Home = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -36,17 +36,15 @@ export const Home = () => {
 
   return (
     <HomeContainer>
-      <TitleContainer>
-        Hello, PastePlz!
-      </TitleContainer>
-      <SettingLine
-        setLanguage={setLanguage}
-        setIndent={setIndent}
-      />
+      <Title title="PastePlz" />
       <EditorContainer>
+        <SettingLine
+          setLanguage={setLanguage}
+          setIndent={setIndent}
+        />
         <Editor
           width="100%"
-          height="100%"
+          height="calc(100% - 50px)"
           language={lang}
           onMount={handleMount}
           loading={(
