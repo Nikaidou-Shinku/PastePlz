@@ -12,8 +12,7 @@ export const Title = ({
     <TitleContainer>
       <TypedText
         texts={[
-          "Hello,",
-          `Hello, ${title}!`,
+          `Hello,^750 ${title}!`,
           "Please feel free :)"
         ]}
       />

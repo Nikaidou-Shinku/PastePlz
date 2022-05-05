@@ -17,7 +17,6 @@ export const TypedText = ({
       typeSpeed: 40,
       backSpeed: 10,
       backDelay: 2000,
-      smartBackspace: true,
       loop: true
     };
 
