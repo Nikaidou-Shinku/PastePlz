@@ -21,7 +21,7 @@ export const IndentSelect = ({
   return (
     <SelectContainer>
       <span>
-        Indent:
+        Indentation:
       </span>
       <Cascader
         allowClear={false}
