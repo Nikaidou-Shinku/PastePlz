@@ -1,4 +1,4 @@
-import { TypedText } from "../../../../components";
+import { TypedText } from "..";
 import { TitleContainer } from "./styles";
 
 export interface ITitleProps {

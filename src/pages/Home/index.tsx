@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Button, message } from "antd";
-import { Loading } from "../../components";
-import { SettingLine, Title } from "./components";
+import { Corner, Loading, Title } from "../../components";
+import { SettingLine } from "./components";
 import { IndentType } from "./components/SettingLine/IndentSelect";
 import { HomeContainer, EditorContainer } from "./styles";
 
@@ -35,42 +35,45 @@ export const Home = () => {
   };
 
   return (
-    <HomeContainer>
-      <Title title="PastePlz" />
-      <EditorContainer>
-        <SettingLine
-          setLanguage={setLanguage}
-          setIndent={setIndent}
-        />
-        <Editor
-          width="100%"
-          height="calc(100% - 50px)"
-          language={lang}
-          onMount={handleMount}
-          loading={(
-            <Loading
-              maxDotNum={3}
-              freshInterval={500}
-            />
-          )}
-          options={{
-            tabSize: indentLength,
-            insertSpaces: replaceTabWithSpaces,
-            detectIndentation: false
-          }}
-        />
-      </EditorContainer>
-      {
-        ok && (
-          <Button
-            type="primary"
-            size="large"
-            onClick={onPaste}
-          >
-            OK~
-          </Button>
-        )
-      }
-    </HomeContainer>
+    <>
+      <Corner link="https://github.com/Nikaidou-Shinku/PastePlz" />
+      <HomeContainer>
+        <Title title="PastePlz" />
+        <EditorContainer>
+          <SettingLine
+            setLanguage={setLanguage}
+            setIndent={setIndent}
+          />
+          <Editor
+            width="100%"
+            height="calc(100% - 50px)"
+            language={lang}
+            onMount={handleMount}
+            loading={(
+              <Loading
+                maxDotNum={3}
+                freshInterval={500}
+              />
+            )}
+            options={{
+              tabSize: indentLength,
+              insertSpaces: replaceTabWithSpaces,
+              detectIndentation: false
+            }}
+          />
+        </EditorContainer>
+        {
+          ok && (
+            <Button
+              type="primary"
+              size="large"
+              onClick={onPaste}
+            >
+              OK~
+            </Button>
+          )
+        }
+      </HomeContainer>
+    </>
   );
 };
