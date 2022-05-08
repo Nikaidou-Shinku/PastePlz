@@ -13,7 +13,7 @@ export const ClickCopy = ({
   msg
 }: IClickCopyProps) => {
   const copyText = useCallback(() => {
-    const input = document.createElement("input");
+    const input = document.createElement("textarea");
     input.value = text;
     document.getElementById("root")?.appendChild(input);
     input.select();
