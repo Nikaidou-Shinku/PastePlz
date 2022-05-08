@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Paste } from "../../interfaces";
 import { Corner, Title } from "../../components";
-import { Content } from "./components/Content";
+import { BackButton, Content } from "./components";
 import { HomeContainer } from "./styles";
 
 export const Display = () => {
@@ -41,6 +41,13 @@ export const Display = () => {
   return (
     <>
       <Corner link="https://github.com/Nikaidou-Shinku/PastePlz" />
+      <BackButton
+        style={{
+          position: "absolute",
+          left: "60px",
+          top: "60px"
+        }}
+      />
       <HomeContainer>
         <Title title="PastePlz" />
         <Content
