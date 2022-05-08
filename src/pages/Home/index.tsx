@@ -62,17 +62,14 @@ export const Home = () => {
             }}
           />
         </EditorContainer>
-        {
-          ok && (
-            <Button
-              type="primary"
-              size="large"
-              onClick={onPaste}
-            >
-              OK~
-            </Button>
-          )
-        }
+        <Button
+          type="primary"
+          size="large"
+          onClick={onPaste}
+          style={ok ? {} : { visibility: "hidden" }}
+        >
+          OK~
+        </Button>
       </HomeContainer>
     </>
   );
