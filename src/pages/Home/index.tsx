@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Button, message } from "antd";
@@ -8,6 +9,8 @@ import { IndentType } from "./components/SettingLine/IndentSelect";
 import { HomeContainer, EditorContainer } from "./styles";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
   const [lang, setLanguage] = useState("cpp");
   const [replaceTabWithSpaces, setUseSpaces] = useState(true);
@@ -20,12 +23,41 @@ export const Home = () => {
     setOk(true);
   };
 
+  const submit = async (code: string) => {
+    const resp = await fetch("/api/paste", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({
+        lang: lang,
+        content: code
+      })
+    });
+    const info = await resp.json();
+    if (resp.status === 201) {
+      return {
+        status: "ok",
+        token: info.token
+      };
+    } else {
+      return {
+        status: "error",
+        msg: info.error
+      };
+    }
+  };
+
   const onPaste = () => {
     const edt = editorRef.current;
     if (typeof edt === "undefined") {
       message.error("Unable to get editor!");
     } else {
-      console.log(edt.getValue()); // TODO: submit content to backend
+      submit(edt.getValue().trim()).then((res) => {
+        if (res.status === "error") {
+          message.error(res.msg);
+        } else {
+          navigate(`/${res.token}`)
+        }
+      });
     }
   };
 
