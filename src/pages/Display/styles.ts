@@ -6,5 +6,17 @@ export const HomeContainer = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
-  height: 100%;
+  .content-container {
+    margin-top: 100px;
+    width: min(80%, 1280px);
+  }
+
+  .tool-buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    > button {
+      margin: 0 5px;
+    }
+  }
 `;

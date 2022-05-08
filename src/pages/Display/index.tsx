@@ -4,6 +4,7 @@ import { Paste } from "../../interfaces";
 import { Corner, Title } from "../../components";
 import { BackButton, Content } from "./components";
 import { HomeContainer } from "./styles";
+import { ClickCopy } from "./components/ClickCopy";
 
 export const Display = () => {
   const now = new Date();
@@ -49,12 +50,28 @@ export const Display = () => {
         }}
       />
       <HomeContainer>
-        <Title title="PastePlz" />
-        <Content
-          lang={data.lang}
-          content={data.content}
-          style={{ width: "min(80%, 1280px)" }}
+        <Title
+          title="PastePlz"
+          style={{ marginTop: "100px" }}
         />
+        <div className="content-container">
+          <div className="tool-buttons">
+            <ClickCopy
+              title="Share"
+              text={window.location.href}
+              msg="Share link copied successfully!"
+            />
+            <ClickCopy
+              title="Copy"
+              text={data.content}
+              msg="Code copied successfully!"
+            />
+          </div>
+          <Content
+            lang={data.lang}
+            content={data.content}
+          />
+        </div>
       </HomeContainer>
     </>
   );
