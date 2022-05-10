@@ -14,19 +14,17 @@ export interface ILangSelectProps {
 export const LangSelect = ({
   langs,
   setLanguage
-}: ILangSelectProps) => {
-  return (
-    <SelectContainer>
-      <span>
-        Language:
-      </span>
-      <Select
-        size="large"
-        style={{ width: "120px" }}
-        defaultValue="cpp"
-        onChange={(value) => { setLanguage(value); }}
-        options={langs}
-      />
-    </SelectContainer>
-  );
-};
+}: ILangSelectProps) => (
+  <SelectContainer>
+    <span>
+      Language:
+    </span>
+    <Select
+      size="large"
+      style={{ width: "120px" }}
+      defaultValue="cpp"
+      onChange={(value) => { setLanguage(value); }}
+      options={langs}
+    />
+  </SelectContainer>
+);

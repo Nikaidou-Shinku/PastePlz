@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
@@ -26,13 +26,13 @@ export const Home = ({
   const [indentLength, setIndentLength] = useState(4);
   const [ok, setOk] = useState(false);
 
-  const handleMount: OnMount = (editor, _monaco) => {
+  const handleMount: OnMount = useCallback((editor, _monaco) => {
     editorRef.current = editor;
     editor.focus();
     setOk(true);
-  };
+  }, [editorRef, setOk]);
 
-  const submit = async (code: string) => {
+  const submit = useCallback(async (lang: string, code: string) => {
     const resp = await fetch("/api/paste", {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -53,9 +53,9 @@ export const Home = ({
         msg: info.error
       };
     }
-  };
+  }, []);
 
-  const onPaste = () => {
+  const onPaste = useCallback(() => {
     const edt = editorRef.current;
     if (typeof edt === "undefined") {
       message.error("Unable to get editor!");
@@ -64,7 +64,7 @@ export const Home = ({
       if (value === "") {
         message.error("Content can not be empty!");
       } else {
-        submit(value).then((res) => {
+        submit(lang, value).then((res) => {
           if (res.status === "error") {
             message.error(res.msg);
           } else {
@@ -73,12 +73,12 @@ export const Home = ({
         });
       }
     }
-  };
+  }, [editorRef, message, submit, navigate]);
 
-  const setIndent = (value: IndentType) => {
+  const setIndent = useCallback((value: IndentType) => {
     setUseSpaces(value[0] === "spaces");
     setIndentLength(parseInt(value[1]));
-  };
+  }, [setUseSpaces, setIndentLength]);
 
   return (
     <Container className={`${theme}-theme`}>

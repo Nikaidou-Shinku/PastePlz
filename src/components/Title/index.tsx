@@ -10,15 +10,13 @@ export interface ITitleProps {
 export const Title = ({
   title,
   style
-}: ITitleProps) => {
-  return (
-    <TitleContainer style={style}>
-      <TypedText
-        texts={[
-          `Hello,^750 ${title}!`,
-          "Please feel free :)"
-        ]}
-      />
-    </TitleContainer>
-  );
-};
+}: ITitleProps) => (
+  <TitleContainer style={style}>
+    <TypedText
+      texts={[
+        `Hello,^750 ${title}!`,
+        "Please feel free :)"
+      ]}
+    />
+  </TitleContainer>
+);

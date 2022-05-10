@@ -45,7 +45,7 @@ export const Display = ({
     };
 
     handle().then((res) => setData(res));
-  }, []);
+  }, [token]);
 
   return (
     <Container className={`${theme}-theme`}>

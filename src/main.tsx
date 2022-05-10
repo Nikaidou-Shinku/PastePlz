@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { loader } from "@monaco-editor/react";
@@ -16,10 +16,10 @@ loader.config({
 const App = () => {
   const [theme, setTheme] = useState("light");
 
-  const changeTheme = (name: string) => {
+  const changeTheme = useCallback((name: string) => {
     document.getElementById("body")!.className = `${name}-theme`;
     setTheme(name);
-  };
+  }, [setTheme]);
 
   return (
     <BrowserRouter>

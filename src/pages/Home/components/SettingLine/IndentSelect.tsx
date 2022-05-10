@@ -17,19 +17,17 @@ export interface IIndentSelectProps {
 export const IndentSelect = ({
   indents,
   setIndent
-}: IIndentSelectProps) => {
-  return (
-    <SelectContainer>
-      <span>
-        Indentation:
-      </span>
-      <Cascader
-        allowClear={false}
-        size="large"
-        defaultValue={[ "spaces", "4" ]}
-        onChange={(value) => { setIndent(value as IndentType); }}
-        options={indents}
-      />
-    </SelectContainer>
-  );
-};
+}: IIndentSelectProps) => (
+  <SelectContainer>
+    <span>
+      Indentation:
+    </span>
+    <Cascader
+      allowClear={false}
+      size="large"
+      defaultValue={[ "spaces", "4" ]}
+      onChange={(value) => { setIndent(value as IndentType); }}
+      options={indents}
+    />
+  </SelectContainer>
+);

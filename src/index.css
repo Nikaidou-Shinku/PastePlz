@@ -34,8 +34,3 @@ body.dark-theme .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disab
 body.dark-theme .ant-cascader-menu-item-expand .ant-cascader-menu-item-expand-icon, .ant-cascader-menu-item-loading-icon {
   color: rgba(255, 255, 255, 0.45);
 }
-
-.monaco-editor * {
-  transition-duration: 0.1s;
-  transition-timing-function: cubic-bezier(0.65, 0.05, 0.36, 1);
-}
