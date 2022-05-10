@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Paste } from "../../interfaces";
-import { Corner, Title } from "../../components";
-import { BackButton, Content } from "./components";
+import { Corner, Title, ThemeButton } from "../../components";
+import { BackButton, ClickCopy, Content } from "./components";
+import { Container } from "../styles";
 import { HomeContainer } from "./styles";
-import { ClickCopy } from "./components/ClickCopy";
 
-export const Display = () => {
+export interface IDisplayProps {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+export const Display = ({
+  theme,
+  setTheme
+}: IDisplayProps) => {
   const now = new Date();
   const params = useParams();
   const token = params.token;
@@ -40,12 +48,24 @@ export const Display = () => {
   }, []);
 
   return (
-    <>
-      <Corner link="https://github.com/Nikaidou-Shinku/PastePlz" />
+    <Container className={`${theme}-theme`}>
+      <Corner
+        theme={theme}
+        link="https://github.com/Nikaidou-Shinku/PastePlz"
+      />
       <BackButton
         style={{
           position: "absolute",
           left: "60px",
+          top: "60px"
+        }}
+      />
+      <ThemeButton
+        theme={theme}
+        setTheme={setTheme}
+        style={{
+          position: "absolute",
+          left: "130px",
           top: "60px"
         }}
       />
@@ -68,11 +88,12 @@ export const Display = () => {
             />
           </div>
           <Content
+            theme={theme}
             lang={data.lang}
             content={data.content}
           />
         </div>
       </HomeContainer>
-    </>
+    </Container>
   );
 };

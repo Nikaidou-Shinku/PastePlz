@@ -2,10 +2,12 @@ import "./styles.css";
 
 export interface ICornerProps {
   link: string;
+  theme: string;
 }
 
 export const Corner = ({
-  link
+  link,
+  theme
 }: ICornerProps) => (
   <a
     href={link}
@@ -18,12 +20,14 @@ export const Corner = ({
       height="80"
       viewBox="0 0 250 250"
       style={{
-        fill: "#151513",
-        color: "#fff",
+        fill: theme === "light" ? "#151513" : "#fff",
+        color: theme === "light" ? "#fff" : "#151513",
         position: "absolute",
         top: 0,
         border: 0,
-        right: 0
+        right: 0,
+        transitionDuration: "0.3s",
+        transitionTimingFunction: "cubic-bezier(0.65, 0.05, 0.36, 1)"
       }}
     >
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />

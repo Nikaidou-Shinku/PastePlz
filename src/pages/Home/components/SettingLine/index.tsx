@@ -4,11 +4,13 @@ import { cfg } from "../../../../../pasteplz.config";
 import { IndentSelect, IndentType } from "./IndentSelect";
 
 export interface ISettingLineProps {
+  theme: string;
   setLanguage: (name: string) => void;
   setIndent: (value: IndentType) => void;
 }
 
 export const SettingLine = ({
+  theme,
   setLanguage,
   setIndent
 }: ISettingLineProps) => {
@@ -24,7 +26,9 @@ export const SettingLine = ({
   }
 
   return (
-    <SettingLineContainer>
+    <SettingLineContainer
+      className={`${theme}-theme`}
+    >
       <LangSelect
         langs={langs}
         setLanguage={setLanguage}

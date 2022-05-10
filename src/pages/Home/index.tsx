@@ -3,12 +3,21 @@ import { useNavigate } from "react-router-dom";
 import monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Button, message } from "antd";
-import { Corner, Loading, Title } from "../../components";
+import { Corner, Loading, ThemeButton, Title } from "../../components";
 import { SettingLine } from "./components";
 import { IndentType } from "./components/SettingLine/IndentSelect";
+import { Container } from "../styles";
 import { HomeContainer, EditorContainer } from "./styles";
 
-export const Home = () => {
+export interface IHomeProps {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+export const Home = ({
+  theme,
+  setTheme
+}: IHomeProps) => {
   const navigate = useNavigate();
 
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -51,13 +60,18 @@ export const Home = () => {
     if (typeof edt === "undefined") {
       message.error("Unable to get editor!");
     } else {
-      submit(edt.getValue().trim()).then((res) => {
-        if (res.status === "error") {
-          message.error(res.msg);
-        } else {
-          navigate(`/${res.token}`)
-        }
-      });
+      const value = edt.getValue().trim();
+      if (value === "") {
+        message.error("Content can not be empty!");
+      } else {
+        submit(value).then((res) => {
+          if (res.status === "error") {
+            message.error(res.msg);
+          } else {
+            navigate(`/${res.token}`)
+          }
+        });
+      }
     }
   };
 
@@ -67,12 +81,25 @@ export const Home = () => {
   };
 
   return (
-    <>
-      <Corner link="https://github.com/Nikaidou-Shinku/PastePlz" />
+    <Container className={`${theme}-theme`}>
+      <Corner
+        theme={theme}
+        link="https://github.com/Nikaidou-Shinku/PastePlz"
+      />
+      <ThemeButton
+        theme={theme}
+        setTheme={setTheme}
+        style={{
+          position: "absolute",
+          left: "130px",
+          top: "60px"
+        }}
+      />
       <HomeContainer>
         <Title title="PastePlz" />
-        <EditorContainer>
+        <EditorContainer className={`${theme}-theme`}>
           <SettingLine
+            theme={theme}
             setLanguage={setLanguage}
             setIndent={setIndent}
           />
@@ -80,6 +107,7 @@ export const Home = () => {
             width="100%"
             height="calc(100% - 50px)"
             language={lang}
+            theme={theme === "light" ? "light" : "vs-dark"}
             onMount={handleMount}
             loading={(
               <Loading
@@ -92,6 +120,7 @@ export const Home = () => {
               insertSpaces: replaceTabWithSpaces,
               detectIndentation: false
             }}
+            
           />
         </EditorContainer>
         <Button
@@ -103,6 +132,6 @@ export const Home = () => {
           OK~
         </Button>
       </HomeContainer>
-    </>
+    </Container>
   );
 };
