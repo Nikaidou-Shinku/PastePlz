@@ -1,15 +1,19 @@
 {
-	"name": "pasteplz",
-	"type": "module",
-	"version": "0.1.0",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"astro": "^2.0.12"
-	}
+  "name": "pasteplz",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^5.0.3",
+    "@astrojs/solid-js": "^2.0.2",
+    "astro": "^2.0.12",
+    "monaco-editor": "^0.35.0",
+    "solid-js": "^1.4.3"
+  }
 }
