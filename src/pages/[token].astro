@@ -22,8 +22,6 @@ if (resp.status !== 200) {
 }
 
 const res: Paste = await resp.json();
-
-const pasteTime = new Date(res.time).toLocaleString();
 ---
 
 <Layout title="PastePlz" prism>
@@ -33,7 +31,7 @@ const pasteTime = new Date(res.time).toLocaleString();
         <button id="copy">Copy</button>
         <button id="share">Share</button>
       </div>
-      <span><span class="time-tip">Paste Time: </span>{pasteTime}</span>
+      <span><span class="time-tip">Paste Time: </span>{res.time}</span>
     </div>
     <Code {...res} />
   </div>
@@ -75,7 +73,7 @@ listen("share", `${SERVER_URL}/${token}`);
   font-size: 1.25rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .time-tip {
     display: none;
   }
@@ -90,7 +88,7 @@ listen("share", `${SERVER_URL}/${token}`);
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 500px) {
   .toolbar {
     flex-direction: column;
     justify-content: center;
@@ -100,6 +98,7 @@ listen("share", `${SERVER_URL}/${token}`);
   }
 
   .toolbar button {
+    margin-bottom: 0.5rem;
     font-size: 0.8rem;
   }
 }
