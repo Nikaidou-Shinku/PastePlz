@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onMount } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
 import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import Monaco from "./Monaco";
 import { API_URL, langDisplay, supportedLangs } from "../../consts";
@@ -24,16 +24,26 @@ const Editor = () => {
   let langEl: HTMLSelectElement | undefined;
   let submitEl: HTMLButtonElement | undefined;
 
+  const setLangListener = (e: Event) => {
+    // @ts-ignore
+    setLang(e.target.value);
+  };
+
   onMount(() => {
     if (typeof langEl === "undefined") {
       throw new Error("langEl is undefined");
     }
 
-    langEl.addEventListener("change", (e) => {
-      // @ts-ignore
-      setLang(e.target.value);
-    });
+    langEl.addEventListener("change", setLangListener);
   });
+
+  onCleanup(() => {
+    if (typeof langEl === "undefined") {
+      return;
+    }
+
+    langEl.removeEventListener("change", setLangListener);
+  })
 
   createEffect(() => {
     if (typeof submitEl === "undefined") {
@@ -46,11 +56,12 @@ const Editor = () => {
       return;
     }
 
-    submitEl.addEventListener("click", () => {
+    const submitListener = () => {
       const value = edt.getValue().trim();
 
       if (value === "") {
         alert("Cannot submit empty code");
+        return;
       }
 
       submit(lang(), value).then((token) => {
@@ -60,7 +71,11 @@ const Editor = () => {
           location.assign(`/${token}`);
         }
       });
-    });
+    };
+
+    submitEl.addEventListener("click", submitListener);
+
+    onCleanup(() => submitEl!.removeEventListener("click", submitListener));
   });
 
   const monacoLang = () => supportedLangs[lang()];
