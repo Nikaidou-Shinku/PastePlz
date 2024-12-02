@@ -3,17 +3,38 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "fmt": "prettier . --write",
+    "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/node": "^5.0.3",
-    "@astrojs/solid-js": "^2.0.2",
-    "astro": "^2.0.12",
-    "monaco-editor": "^0.35.0",
-    "solid-js": "^1.4.3"
-  }
+    "@prisma/client": "^6.0.1",
+    "@solidjs/meta": "^0.29.4",
+    "@solidjs/router": "^0.15.2",
+    "@solidjs/start": "^1.0.10",
+    "solid-js": "^1.9.3",
+    "vinxi": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "prisma": "^6.0.1",
+    "shiki": "^1.24.2",
+    "tailwindcss": "^3.4.16"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
 }

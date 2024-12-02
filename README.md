@@ -1,39 +1,67 @@
-## PastePlz
+# PastePlz
 
 A simple online pastebin.
 
 Let code sharing be full of love and peace :)
 
-### Supported languages
+## Supported languages
 
-- HTML
-- XML
-- CSS
-- JavaScript
-- AsciiDoc (Display only)
-- Bash
+- Plain Text
+- AsciiDoc
+- Assembly
+- Astro
+- Batch File
+- BibTeX
 - C
-- C#
+- CMake
+- Common Lisp
+- Coq
 - C++
-- CMake (Display only)
+- C#
+- CSS
+- CSV
+- Dart
+- Diff
+- Dockerfile
 - Elixir
 - Go
-- Haskell (Display only)
+- Haskell
+- HTML
 - Java
+- JavaScript
 - JSON
-- JSON5 (Display only)
+- JSX
 - Kotlin
-- LaTeX (Display only)
+- LaTeX
+- Lean 4
 - Lua
-- Makefile (Display only)
+- Makefile
 - Markdown
+- MATLAB
+- Nix
+- OCaml
 - Pascal
 - Perl
 - PHP
+- PowerShell
 - Python
 - Ruby
 - Rust
 - Scala
-- TOML (Display only)
+- Scheme
+- Shell
+- Shell Session
+- SQL
+- Svelte
+- TeX
+- TOML
+- TSX
 - TypeScript
+- Typst
+- Verilog
+- Vue
+- WebAssembly
+- Wolfram
+- XML
 - YAML
+- Zig

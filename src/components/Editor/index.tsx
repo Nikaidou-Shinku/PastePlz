@@ -1,105 +1,85 @@
-import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import Monaco from "./Monaco";
-import { API_URL, langDisplay, supportedLangs } from "../../consts";
+import { createEffect, createSignal, JSX, splitProps } from "solid-js";
+import { createAsync } from "@solidjs/router";
+import { importLanguage } from "~/utils";
+import { useShiki } from "~/highlighter";
 
-const submit = async (lang: string, content: string): Promise<string | null> => {
-  const resp = await fetch(`${API_URL}/paste`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ lang, content }),
-  });
+interface EditorProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  lang: string;
+}
 
-  if (resp.status !== 200) {
-    return null;
-  }
+export default (props: EditorProps) => {
+  const [local, others] = splitProps(props, ["lang"]);
 
-  const data = await resp.json();
-  return data.token;
-};
+  const shikiPromise = useShiki();
 
-const Editor = () => {
-  const [lang, setLang] = createSignal<keyof typeof supportedLangs>("md");
-  const [editor, setEditor] = createSignal<monaco.editor.IStandaloneCodeEditor>();
-  let langEl: HTMLSelectElement | undefined;
-  let submitEl: HTMLButtonElement | undefined;
+  const [content, setContent] = createSignal("");
 
-  const setLangListener = (e: Event) => {
-    // @ts-ignore
-    setLang(e.target.value);
-  };
+  const rawHtml = createAsync(() => {
+    const lang = local.lang;
+    const contentVal = content();
 
-  onMount(() => {
-    if (typeof langEl === "undefined") {
-      throw new Error("langEl is undefined");
-    }
+    return (async () => {
+      const shiki = await shikiPromise;
 
-    langEl.addEventListener("change", setLangListener);
-  });
-
-  onCleanup(() => {
-    if (typeof langEl === "undefined") {
-      return;
-    }
-
-    langEl.removeEventListener("change", setLangListener);
-  })
-
-  createEffect(() => {
-    if (typeof submitEl === "undefined") {
-      throw new Error("submitEl is undefined");
-    }
-
-    const edt = editor();
-
-    if (typeof edt === "undefined") {
-      return;
-    }
-
-    const submitListener = () => {
-      const value = edt.getValue().trim();
-
-      if (value === "") {
-        alert("Cannot submit empty code");
-        return;
+      if (lang !== "text") {
+        await shiki.loadLanguage(importLanguage(lang));
       }
 
-      submit(lang(), value).then((token) => {
-        if (token === null) {
-          alert("Something went wrong");
-        } else {
-          location.assign(`/${token}`);
-        }
+      return shiki.codeToHtml(contentVal, {
+        lang,
+        // TODO: switch theme
+        theme: "snazzy-light",
+        transformers: [
+          {
+            code: (node) => {
+              node.children.push({ type: "text", value: "\n" });
+            },
+          },
+        ],
       });
-    };
-
-    submitEl.addEventListener("click", submitListener);
-
-    onCleanup(() => submitEl!.removeEventListener("click", submitListener));
+    })();
   });
 
-  const monacoLang = () => supportedLangs[lang()];
+  let renderedEl: HTMLDivElement | undefined;
+
+  const [scrollTop, setScrollTop] = createSignal(0);
+  const [scrollLeft, setScrollLeft] = createSignal(0);
+
+  createEffect(() => {
+    rawHtml();
+
+    if (typeof renderedEl !== "undefined") {
+      renderedEl.scrollTop = scrollTop();
+      renderedEl.scrollLeft = scrollLeft();
+    }
+  });
 
   return (
-    <div class="container">
-      <div class="config">
-        <div>
-          <label for="lang">Language: </label>
-          <select id="lang" ref={langEl}>
-            <For each={Object.entries(langDisplay)}>
-              {([key, value]) => (
-                <option value={key} selected={lang() === key}>
-                  {value}
-                </option>
-              )}
-            </For>
-          </select>
-        </div>
-        <button ref={submitEl}>Submit</button>
-      </div>
-      <Monaco lang={monacoLang} setEditor={setEditor} />
+    <div class="relative h-[30rem] w-full sm:h-[40rem]">
+      <div
+        class="absolute left-0 top-0 h-full w-full overflow-scroll bg-[#fafbfc]"
+        innerHTML={rawHtml.latest}
+        ref={renderedEl}
+      ></div>
+      <textarea
+        class="absolute left-0 top-0 h-full w-full text-nowrap bg-transparent font-mono"
+        style="-webkit-text-fill-color: transparent;"
+        spellcheck={false}
+        onInput={(e) => setContent(e.currentTarget.value)}
+        value={content()}
+        onScroll={(e) => {
+          const { scrollTop, scrollLeft } = e.currentTarget;
+
+          setScrollTop(scrollTop);
+          setScrollLeft(scrollLeft);
+
+          if (typeof renderedEl !== "undefined") {
+            renderedEl.scrollTop = scrollTop;
+            renderedEl.scrollLeft = scrollLeft;
+          }
+        }}
+        {...others}
+      ></textarea>
     </div>
   );
 };
-
-export default Editor;
