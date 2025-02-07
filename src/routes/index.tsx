@@ -1,64 +1,65 @@
-import { createSignal, For } from "solid-js";
-import { action, redirect } from "@solidjs/router";
-import { supportedLanguages } from "~/constants";
-import { newPaste, validatePaste } from "~/utils/db";
-import { Button, Editor } from "~/components";
-
-const postNewPaste = action(async (formData: FormData) => {
-  "use server";
-  const lang = String(formData.get("lang"));
-  const content = String(formData.get("content"));
-
-  console.log("[lang]", lang);
-  console.log("[content]", content);
-
-  const err = validatePaste(lang, content);
-
-  console.log("[err]", err);
-
-  if (err) {
-    return new Error(err);
-  }
-
-  try {
-    const res = await newPaste(lang, content);
-    return redirect(`/${res.id}`);
-  } catch (err) {
-    return err as Error;
-  }
-});
+import { createSignal, For, Show } from "solid-js";
+import { useSubmission } from "@solidjs/router";
+// import { BundledTheme } from "shiki";
+import { supportedLanguages, SupportedLanguages } from "~/constants";
+import { submitPaste } from "~/lib";
+import Preview from "~/components/Preview";
 
 export default () => {
-  const [lang, setLang] = createSignal("text");
+  const [lang, setLang] = createSignal<SupportedLanguages>("text");
+  // TODO: change theme
+  // const [theme, setTheme] = createSignal<BundledTheme>("snazzy-light");
+
+  const [code, setCode] = createSignal("");
+
+  const submission = useSubmission(submitPaste);
 
   return (
-    <form
-      class="mt-3 flex flex-col items-center sm:mt-6 lg:mt-12"
-      action={postNewPaste}
-      method="post"
-    >
-      {/* TODO: styles */}
-      <div class="my-4 flex w-full justify-evenly text-xl">
+    <div class="flex flex-col items-center space-y-8 bg-neutral-50 py-8">
+      <h1 class="text-3xl">Hello, PastePlz!</h1>
+      <form
+        class="flex w-full flex-col items-center space-y-4"
+        action={submitPaste}
+        method="post"
+      >
         <div class="space-x-2">
-          <label for="lang">Language:</label>
+          <label for="lang">Language</label>
           <select
             id="lang"
             name="lang"
-            class="border p-1"
-            onInput={(e) => setLang(e.currentTarget.value)}
+            class="rounded border border-neutral-300 bg-white px-2 py-1"
+            onInput={(e) =>
+              setLang(e.currentTarget.value as SupportedLanguages)
+            }
           >
             <For each={Object.entries(supportedLanguages)}>
-              {([key, value]) => (
+              {([key, name]) => (
                 <option value={key} selected={lang() === key}>
-                  {value}
+                  {name}
                 </option>
               )}
             </For>
           </select>
         </div>
-        <Button type="submit">Submit</Button>
-      </div>
-      <Editor name="content" lang={lang()} />
-    </form>
+        <textarea
+          class="h-32 w-4/5 rounded border border-neutral-300 bg-white p-1"
+          name="content"
+          value={code()}
+          onInput={(e) => setCode(e.currentTarget.value)}
+        ></textarea>
+        <button
+          class="rounded border border-neutral-300 bg-neutral-100 px-2 py-1 transition-colors hover:bg-neutral-200 active:bg-neutral-300"
+          disabled={submission.pending}
+        >
+          {submission.pending ? "Submitting..." : "Submit"}
+        </button>
+        <Show when={submission.result?.error}>
+          {(error) => <p class="text-red-500">{error()}</p>}
+        </Show>
+      </form>
+      <Show when={lang() !== "text" && code().trim() !== ""}>
+        <Preview lang={lang()} theme="snazzy-light" code={code()} />
+      </Show>
+    </div>
   );
 };

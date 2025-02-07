@@ -1,8 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* line numbers for editor */
 code {
   counter-reset: step;
   counter-increment: step 0;
@@ -16,8 +13,4 @@ code .line::before {
   display: inline-block;
   text-align: right;
   color: rgba(115, 138, 148, 0.4);
-}
-
-textarea {
-  padding-left: 2.5rem;
 }

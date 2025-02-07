@@ -27,6 +27,3 @@ gitignore
 # System Files
 .DS_Store
 Thumbs.db
-
-# Development database
-dev.db*

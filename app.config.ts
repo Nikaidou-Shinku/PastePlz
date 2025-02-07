@@ -1,9 +1,13 @@
 import { defineConfig } from "@solidjs/start/config";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   server: {
     prerender: {
-      crawlLinks: true,
+      routes: ["/", "/404"],
     },
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });
