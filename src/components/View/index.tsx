@@ -44,7 +44,7 @@ export default (props: ViewProps) => {
       </div>
       <Suspense>
         <div
-          class="w-4/5 overflow-scroll rounded border border-neutral-300"
+          class="w-4/5 max-w-5xl overflow-auto rounded border border-neutral-300"
           innerHTML={rendered.latest}
         ></div>
       </Suspense>

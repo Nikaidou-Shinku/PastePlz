@@ -18,7 +18,7 @@ export default (props: PreviewProps) => {
     <div class="flex w-full flex-col items-center space-y-4">
       <h2 class="text-2xl">Preview</h2>
       <div
-        class="w-4/5 overflow-scroll rounded border border-neutral-300"
+        class="w-4/5 max-w-3xl overflow-auto rounded border border-neutral-300"
         innerHTML={rendered.latest}
       ></div>
     </div>
