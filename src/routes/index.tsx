@@ -42,7 +42,7 @@ export default () => {
           </select>
         </div>
         <textarea
-          class="h-32 w-4/5 rounded border border-neutral-300 bg-white p-1"
+          class="aspect-video w-4/5 max-w-3xl rounded border border-neutral-300 bg-white p-1"
           name="content"
           value={code()}
           onInput={(e) => setCode(e.currentTarget.value)}
